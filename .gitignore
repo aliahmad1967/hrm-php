@@ -1,0 +1,61 @@
+# Ignore sensitive files and directories
+# ======================================
+
+# Configuration files with sensitive data
+config/database.php
+config/app.php
+.env
+
+# Uploaded files
+public/assets/uploads/employees/*
+public/assets/uploads/documents/*
+!public/assets/uploads/employees/.gitkeep
+!public/assets/uploads/documents/.gitkeep
+
+# Backup files
+public/backups/*
+!public/backups/.gitkeep
+
+# Logs and cache
+storage/logs/*
+storage/cache/*
+!storage/logs/.gitkeep
+!storage/cache/.gitkeep
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.project
+.settings/
+
+# Composer
+vendor/
+composer.lock
+
+# Node modules (if using npm)
+node_modules/
+package-lock.json
+
+# Test files (keep in repo but not in production)
+test_*.php
+fix_*.php
+change_*.php
+generate_*.php
