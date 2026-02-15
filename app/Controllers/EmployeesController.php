@@ -272,7 +272,7 @@ class EmployeesController extends Controller {
         ]);
     }
     
-    public function exportPdf() {
+    public function exportPdfAction() {
         $this->checkPermission('employees.view');
         
         $filters = [
@@ -343,7 +343,7 @@ class EmployeesController extends Controller {
         exit;
     }
     
-    public function exportExcel() {
+    public function exportExcelAction() {
         $this->checkPermission('employees.view');
         
         $filters = [
