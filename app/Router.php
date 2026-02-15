@@ -60,7 +60,16 @@ class Router {
                 $action = $this->convertToCamelCase($action);
                 
                 if (is_callable([$controller_object, $action])) {
-                    $controller_object->$action();
+                    // Extract route parameters (excluding controller and action)
+                    $params = $this->params;
+                    unset($params['controller'], $params['action']);
+                    
+                    // Call action with parameters
+                    if (!empty($params)) {
+                        $controller_object->$action(...array_values($params));
+                    } else {
+                        $controller_object->$action();
+                    }
                 } else {
                     throw new \Exception("Action '$action' not found in controller '$controller'");
                 }
