@@ -6,9 +6,19 @@
 <div class="main-content">
     <!-- Header -->
     <header class="header">
+        <!-- Mobile Menu Toggle -->
+        <button class="header-btn d-md-none me-2" onclick="document.querySelector('.sidebar').classList.toggle('show'); document.querySelector('.mobile-sidebar-overlay').classList.toggle('show');">
+            <i class="fas fa-bars"></i>
+        </button>
+        
         <h1 class="header-title"><?= $title ?></h1>
         
         <div class="header-actions">
+            <!-- Home Button for Mobile -->
+            <a href="<?= base_url('dashboard') ?>" class="header-btn d-md-none" title="الرئيسية">
+                <i class="fas fa-home"></i>
+            </a>
+            
             <button class="header-btn" title="الإشعارات">
                 <i class="fas fa-bell"></i>
                 <span class="badge bg-danger">3</span>
