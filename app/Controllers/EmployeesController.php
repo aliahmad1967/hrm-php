@@ -271,4 +271,111 @@ class EmployeesController extends Controller {
             'title' => 'ملف الموظف: ' . $employee['full_name']
         ]);
     }
+    
+    public function exportPdf() {
+        $this->checkPermission('employees.view');
+        
+        $filters = [
+            'status' => $this->getGet('status'),
+            'department_id' => $this->getGet('department_id'),
+            'search' => $this->getGet('search')
+        ];
+        
+        $employees = $this->employeeModel->getAllWithDepartments(array_filter($filters));
+        
+        // Simple HTML to PDF output
+        header('Content-Type: text/html; charset=utf-8');
+        header('Content-Disposition: attachment; filename="employees_' . date('Y-m-d') . '.html"');
+        
+        echo '<!DOCTYPE html>
+        <html dir="rtl" lang="ar">
+        <head>
+            <meta charset="UTF-8">
+            <title>قائمة الموظفين</title>
+            <style>
+                body { font-family: Arial, sans-serif; margin: 20px; }
+                table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                th, td { border: 1px solid #ddd; padding: 12px; text-align: right; }
+                th { background-color: #4CAF50; color: white; }
+                tr:nth-child(even) { background-color: #f2f2f2; }
+                h1 { text-align: center; color: #333; }
+                .header-info { text-align: center; margin-bottom: 30px; }
+            </style>
+        </head>
+        <body>
+            <div class="header-info">
+                <h1>قائمة الموظفين</h1>
+                <p>تاريخ التقرير: ' . date('Y-m-d') . '</p>
+                <p>إجمالي الموظفين: ' . count($employees) . '</p>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>الرقم الوظيفي</th>
+                        <th>الاسم</th>
+                        <th>القسم</th>
+                        <th>المسمى الوظيفي</th>
+                        <th>الراتب</th>
+                        <th>الحالة</th>
+                    </tr>
+                </thead>
+                <tbody>';
+        
+        foreach ($employees as $index => $emp) {
+            echo '<tr>
+                <td>' . ($index + 1) . '</td>
+                <td>' . $emp['employee_code'] . '</td>
+                <td>' . $emp['full_name'] . '</td>
+                <td>' . ($emp['department_name'] ?: '-') . '</td>
+                <td>' . $emp['job_title'] . '</td>
+                <td>' . format_currency($emp['basic_salary']) . '</td>
+                <td>' . get_status_arabic($emp['status']) . '</td>
+            </tr>';
+        }
+        
+        echo '</tbody>
+            </table>
+        </body>
+        </html>';
+        
+        exit;
+    }
+    
+    public function exportExcel() {
+        $this->checkPermission('employees.view');
+        
+        $filters = [
+            'status' => $this->getGet('status'),
+            'department_id' => $this->getGet('department_id'),
+            'search' => $this->getGet('search')
+        ];
+        
+        $employees = $this->employeeModel->getAllWithDepartments(array_filter($filters));
+        
+        // Output as CSV (Excel compatible)
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="employees_' . date('Y-m-d') . '.csv"');
+        
+        // Add BOM for Excel UTF-8 compatibility
+        echo "\xEF\xBB\xBF";
+        
+        // Headers
+        echo "#,الرقم الوظيفي,الاسم,القسم,المسمى الوظيفي,الراتب,الحالة,تاريخ التعيين\n";
+        
+        // Data
+        foreach ($employees as $index => $emp) {
+            echo ($index + 1) . ',';
+            echo $emp['employee_code'] . ',';
+            echo '"' . $emp['full_name'] . '",'; // Wrap in quotes for Arabic text
+            echo '"' . ($emp['department_name'] ?: '-') . '",';
+            echo '"' . $emp['job_title'] . '",';
+            echo $emp['basic_salary'] . ',';
+            echo get_status_arabic($emp['status']) . ',';
+            echo $emp['hire_date'] . "\n";
+        }
+        
+        exit;
+    }
 }
