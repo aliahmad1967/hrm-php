@@ -7,6 +7,7 @@ namespace App\Controllers;
 
 use App\Models\Department;
 use App\Models\Employee;
+use Auth;
 
 class DepartmentsController extends Controller {
     

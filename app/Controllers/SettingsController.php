@@ -5,6 +5,8 @@
 
 namespace App\Controllers;
 
+use Auth;
+
 class SettingsController extends Controller {
     
     public function index() {

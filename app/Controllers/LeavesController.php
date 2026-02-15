@@ -6,6 +6,7 @@
 namespace App\Controllers;
 
 use App\Models\Employee;
+use Auth;
 
 class LeavesController extends Controller {
     

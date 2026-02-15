@@ -5,6 +5,8 @@
 
 namespace App\Controllers;
 
+use Auth;
+
 class DocumentsController extends Controller {
     
     public function index() {

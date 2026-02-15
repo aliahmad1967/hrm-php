@@ -5,6 +5,8 @@
 
 namespace App\Controllers;
 
+use Auth;
+
 class UsersController extends Controller {
     
     public function index() {
