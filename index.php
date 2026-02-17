@@ -55,6 +55,12 @@ require APP_PATH . '/Router.php';
 // Load helper functions
 require BASE_PATH . '/helpers/functions.php';
 
+// Disable caching
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Cache-Control: post-check=0, pre-check=0', false);
+header('Pragma: no-cache');
+header('Expires: Sun, 01 Jan 2014 00:00:00 GMT');
+
 // Start session
 session_start();
 

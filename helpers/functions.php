@@ -288,6 +288,13 @@ function csrf_field() {
 }
 
 /**
+ * Get CSRF token
+ */
+function csrf_token() {
+    return Auth::csrf();
+}
+
+/**
  * Encrypt data
  */
 function encrypt_data($data, $key) {
